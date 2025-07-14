@@ -32,7 +32,7 @@ export default function JobSidebar() {
                 <Card className="rounded-xl p-6 flex flex-col items-center text-center bg-black text-white">
                     <div className="mb-4 w-full h-32 bg-[url('/public/file.svg')] bg-cover rounded-lg" />
                     <h2 className="text-xl font-bold mb-2">Get Your best profession with LuckyJob</h2>
-                    <Button className="bg-[#7dd3fc] text-black font-semibold rounded-full px-6 py-2 mt-2">Learn more</Button>
+                    <Button className="bg-[#7dd3fc] hover:bg-[#7dd3fc]/80 text-black font-semibold rounded-full px-6 py-2 mt-2">Learn more</Button>
                 </Card>
                 {/* Filters */}
                 <div>
