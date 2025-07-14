@@ -35,10 +35,10 @@ const jobs = [
 export default function JobsCard() {
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
                 {jobs.map((job, idx) => (
                     <Card key={idx} className="relative rounded-2xl shadow-sm border border-gray-200 bg-white p-2">
-                        <CardContent className={`rounded-2xl ${job.color} px-6 py-4 mt-0 mb-0`}>
+                        <CardContent className={`rounded-2xl ${job.color} px-6 py-4 mt-0 mb-0 h-[300px] flex flex-col justify-between`}>
                             {/* Save/Bookmark icon */}
                             <button className="absolute top-4 right-4 text-gray-400 hover:text-black bg-white p-2 rounded-full">
                                 <Bookmark size={20} />

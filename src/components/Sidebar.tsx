@@ -2,8 +2,6 @@
 import {
     Sidebar,
     SidebarContent,
-    SidebarHeader,
-    SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,11 +24,11 @@ const employmentTypes = [
 
 export default function JobSidebar() {
     return (
-        <Sidebar collapsible="icon" className="w-[320px] bg-white border-r border-gray-200 p-6 flex flex-col gap-8">
+        <Sidebar className="bg-white border-r border-gray-200 p-6 flex flex-col gap-8">
             <SidebarContent>
                 {/* Promo Card */}
                 <Card className="rounded-xl p-6 flex flex-col items-center text-center bg-black text-white">
-                    <div className="mb-4 w-full h-32 bg-[url('/public/file.svg')] bg-cover rounded-lg" />
+                    <div className="mb-4 w-full h-auto bg-[url('/public/file.svg')] bg-cover rounded-lg" />
                     <h2 className="text-xl font-bold mb-2">Get Your best profession with LuckyJob</h2>
                     <Button className="bg-[#7dd3fc] hover:bg-[#7dd3fc]/80 text-black font-semibold rounded-full px-6 py-2 mt-2">Learn more</Button>
                 </Card>
