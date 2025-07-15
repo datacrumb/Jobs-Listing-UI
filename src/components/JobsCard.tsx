@@ -63,7 +63,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                     const isBookmarked = bookmarks.includes(jobKey);
                     return (
                         <Card key={idx} className="relative rounded-2xl shadow-sm border border-gray-200 bg-white p-2">
-                            <CardContent className={`rounded-2xl px-6 py-4 mt-0 mb-0 h-[300px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
+                            <CardContent className={`rounded-2xl px-6 py-4 mt-0 mb-0 h-[300px] md:h-[350px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
                                 {/* Save/Bookmark icon */}
                                 <button
                                     className={`absolute top-4 right-4 ${isBookmarked ? 'text-black' : 'text-gray-400'} hover:text-black bg-white p-2 rounded-full`}
@@ -77,7 +77,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                                     <span className="text-sm font-medium text-gray-700">{job.company}</span>
                                 </div>
                                 {/* Job Title */}
-                                <div className="text-xl font-bold mb-3 text-gray-900 leading-tight">
+                                <div className="text-lg md:text-2xl font-bold mb-3 text-gray-900 leading-tight">
                                     {job.title}
                                 </div>
                                 {/* Tags */}
@@ -85,6 +85,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                                     <div className="flex flex-wrap gap-2 mb-2 pr-1">
                                         {job.tags
                                             .split(",")
+                                            .slice(0, 3)
                                             .map((tag, i) => tag.trim())
                                             .filter(Boolean)
                                             .map((tag, i) => (
@@ -103,7 +104,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                                     <div className="text-xs text-gray-500">{job.location}</div>
                                 </div>
                                 <Button asChild className="rounded-full px-6 py-2 text-base font-semibold bg-black text-white hover:bg-gray-900">
-                                    <Link href={job?.link || '#'} target="_blank">Details</Link>
+                                    <Link href={job?.link || '#'} target="_blank">Apply</Link>
                                 </Button>
                             </CardFooter>
                         </Card>
