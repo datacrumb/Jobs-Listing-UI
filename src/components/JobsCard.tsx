@@ -77,7 +77,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                                     <span className="text-sm font-medium text-gray-700">{job.company}</span>
                                 </div>
                                 {/* Job Title */}
-                                <div className="text-lg md:text-2xl font-bold mb-3 text-gray-900 leading-tight">
+                                <div className="text-lg md:text-xl lg:text-2xl font-bold mb-3 text-gray-900 leading-tight">
                                     {job.title}
                                 </div>
                                 {/* Tags */}
