@@ -6,6 +6,7 @@ export interface Job {
     title?: string;
     company?: string;
     location?: string;
+    link?: string;
     salary?: string;
     tags?: string; // This will be a comma-separated string from Google Sheets
     description?: string;

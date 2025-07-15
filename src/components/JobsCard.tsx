@@ -14,7 +14,7 @@ import {
     PaginationNext,
 } from "@/components/ui/pagination";
 import { Job } from "@/lib/google-sheets";
-
+import Link from "next/link";
 
 type JobsCardProps = {
     jobs: Job[];
@@ -85,8 +85,8 @@ export default function JobsCard({ jobs }: JobsCardProps) {
                             <div>
                                 <div className="text-xs text-gray-500">{job.location}</div>
                             </div>
-                            <Button className="rounded-full px-6 py-2 text-base font-semibold bg-black text-white hover:bg-gray-900">
-                                Details
+                            <Button asChild className="rounded-full px-6 py-2 text-base font-semibold bg-black text-white hover:bg-gray-900">
+                                <Link href={job?.link || '#'} target="_blank">Details</Link>
                             </Button>
                         </CardFooter>
                     </Card>
