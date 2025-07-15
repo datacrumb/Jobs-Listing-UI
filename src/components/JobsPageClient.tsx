@@ -9,6 +9,8 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Bookmark } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+const CITY_LIST = ["karachi", "lahore", "islamabad", "peshawar", "quetta"];
+
 export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
   // Assign a color to each job deterministically
   const jobsWithColors = useMemo(() => {
@@ -19,6 +21,7 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
   }, [jobs]);
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -42,6 +45,12 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
     );
   };
 
+  const handleCityChange = (city: string, checked: boolean) => {
+    setSelectedCities((prev) =>
+      checked ? [...prev, city] : prev.filter((c) => c !== city)
+    );
+  };
+
   const onToggleBookmark = (job: Job) => {
     const key = getJobKey(job);
     setBookmarks((prev) =>
@@ -61,17 +70,38 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
     return Array.from(tagSet);
   }, [jobsWithColors]);
 
-  const filteredJobs = useMemo(() => {
-    if (selectedTags.length === 0) {
-      return jobsWithColors;
-    }
-    return jobsWithColors.filter((job) =>
+  // Extract available cities from tags
+  const availableCities = useMemo(() => {
+    const tagSet = new Set<string>();
+    jobsWithColors.forEach((job) => {
       (job.tags || '')
         .split(',')
-        .map((t) => t.trim())
-        .some((tag) => selectedTags.includes(tag))
-    );
-  }, [jobsWithColors, selectedTags]);
+        .map((tag) => tag.trim().toLowerCase())
+        .filter(Boolean)
+        .forEach((tag) => tagSet.add(tag));
+    });
+    return CITY_LIST.filter(city => tagSet.has(city));
+  }, [jobsWithColors]);
+
+  const filteredJobs = useMemo(() => {
+    return jobsWithColors.filter((job) => {
+      // Tag filter
+      const tagMatch =
+        selectedTags.length === 0 ||
+        (job.tags || "")
+          .split(",")
+          .map((t) => t.trim())
+          .some((tag) => selectedTags.includes(tag));
+      // City filter
+      const cityMatch =
+        selectedCities.length === 0 ||
+        (job.tags || "")
+          .split(",")
+          .map((t) => t.trim().toLowerCase())
+          .some((tag) => selectedCities.includes(tag));
+      return tagMatch && cityMatch;
+    });
+  }, [jobsWithColors, selectedTags, selectedCities]);
 
   // Get bookmarked jobs
   const bookmarkedJobs = useMemo(() => {
@@ -84,9 +114,12 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
         tags={allTags}
         selectedTags={selectedTags}
         onTagChange={handleTagChange}
+        selectedCities={selectedCities}
+        onCityChange={handleCityChange}
+        availableCities={availableCities}
       />
       <main className="flex-1 p-6 md:p-10">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div className="text-2xl font-bold">Recommended jobs</div>
           <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
@@ -98,7 +131,7 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
                 )}
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-md">
+            <SheetContent side="right" className="w-full max-w-md pl-2">
               <div className="text-xl font-bold mb-4">Bookmarked Jobs</div>
               {bookmarkedJobs.length === 0 ? (
                 <div className="text-gray-500">No bookmarks yet.</div>

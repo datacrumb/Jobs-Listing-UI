@@ -2,6 +2,8 @@
 import {
     Sidebar,
     SidebarContent,
+    SidebarGroup,
+    SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,9 +13,16 @@ type JobSidebarProps = {
   tags: string[];
   selectedTags: string[];
   onTagChange: (tag: string, checked: boolean) => void;
+  selectedCities: string[];
+  onCityChange: (city: string, checked: boolean) => void;
+  availableCities: string[];
 };
 
-export default function JobSidebar({ tags, selectedTags, onTagChange }: JobSidebarProps) {
+const FILTER_TAGS = ["Full-Time", "Fresher", "On-site", "Entry-Level", "Part-Time"];
+
+export default function JobSidebar({ tags, selectedTags, onTagChange, selectedCities, onCityChange, availableCities }: JobSidebarProps) {
+    // Only show the specified filter tags
+    const filteredTags = FILTER_TAGS.filter(tag => tags.includes(tag));
     return (
         <Sidebar className="bg-white border-r border-gray-200 p-6 flex flex-col gap-8">
             <SidebarContent>
@@ -27,9 +36,9 @@ export default function JobSidebar({ tags, selectedTags, onTagChange }: JobSideb
                 <div>
                     <h3 className="text-lg font-semibold mb-4">Filter by Tags</h3>
                     <div className="mb-4">
-                        <div className="font-medium mb-2">Job Tags</div>
-                        <div className="flex flex-col gap-2">
-                            {tags.map((tag) => (
+                        <SidebarGroup className="flex flex-col gap-2">
+                            <SidebarGroupLabel className="font-medium mb-2">Job Tags</SidebarGroupLabel>
+                            {filteredTags.map((tag) => (
                                 <label key={tag} className="flex items-center gap-2">
                                     <Checkbox
                                         checked={selectedTags.includes(tag)}
@@ -40,7 +49,21 @@ export default function JobSidebar({ tags, selectedTags, onTagChange }: JobSideb
                                     <span>{tag}</span>
                                 </label>
                             ))}
-                        </div>
+                        </SidebarGroup>
+                        <SidebarGroup className="flex flex-col gap-2">
+                            <SidebarGroupLabel className="font-medium mb-2">Cities</SidebarGroupLabel>
+                            {availableCities.map((city) => (
+                                <label key={city} className="flex items-center gap-2">
+                                    <Checkbox
+                                        checked={selectedCities.includes(city)}
+                                        onCheckedChange={(checked) => {
+                                            onCityChange(city, !!checked);
+                                        }}
+                                    />
+                                    <span>{city.charAt(0).toUpperCase() + city.slice(1)}</span>
+                                </label>
+                            ))}
+                        </SidebarGroup>
                     </div>
                 </div>
             </SidebarContent>

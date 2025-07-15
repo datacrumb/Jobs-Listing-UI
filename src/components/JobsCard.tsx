@@ -34,7 +34,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
     const paginatedJobs = jobs.slice((page - 1) * JOBS_PER_PAGE, page * JOBS_PER_PAGE);
 
     // Determine grid class
-    const gridClass = `grid grid-cols-1${columns >= 2 ? ` md:grid-cols-2` : ''}${columns >= 3 ? ` lg:grid-cols-3` : ''}${columns >= 4 ? ` xl:grid-cols-4` : ''} gap-6 w-full`;
+    const gridClass = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full`;
     const sheetGridClass = `grid grid-cols-1 gap-6 w-full`;
 
     // Helper to generate page numbers (show up to 5 pages, with current in the middle if possible)
@@ -63,7 +63,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                     const isBookmarked = bookmarks.includes(jobKey);
                     return (
                         <Card key={idx} className="relative rounded-2xl shadow-sm border border-gray-200 bg-white p-2">
-                            <CardContent className={`rounded-2xl px-6 py-4 mt-0 mb-0 h-[300px] md:h-[350px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
+                            <CardContent className={`rounded-2xl px-6 py-4 mt-0 mb-0 h-[200px] md:h-[350px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
                                 {/* Save/Bookmark icon */}
                                 <button
                                     className={`absolute top-4 right-4 ${isBookmarked ? 'text-black' : 'text-gray-400'} hover:text-black bg-white p-2 rounded-full`}
