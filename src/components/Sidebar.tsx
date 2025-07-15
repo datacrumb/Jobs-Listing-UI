@@ -28,16 +28,16 @@ export default function JobSidebar({ tags, selectedTags, onTagChange, selectedCi
             <SidebarContent>
                 {/* Promo Card */}
                 <Card className="rounded-xl p-6 flex flex-col items-center text-center bg-black text-white">
-                    <div className="mb-4 w-full h-auto bg-[url('/public/file.svg')] bg-cover rounded-lg" />
+                    <div className="mb-4 w-full h-auto bg-cover rounded-lg" />
                     <h2 className="text-xl font-bold mb-2">Get Your best profession with LuckyJob</h2>
                     <Button className="bg-[#7dd3fc] hover:bg-[#7dd3fc]/80 text-black font-semibold rounded-full px-6 py-2 mt-2">Learn more</Button>
                 </Card>
                 {/* Filters */}
                 <div>
-                    <h3 className="text-lg font-semibold mb-4">Filter by Tags</h3>
+                    <h3 className="text-lg font-semibold">Filter by Tags</h3>
                     <div className="mb-4">
                         <SidebarGroup className="flex flex-col gap-2">
-                            <SidebarGroupLabel className="font-medium mb-2">Job Tags</SidebarGroupLabel>
+                            <SidebarGroupLabel className="font-medium">Job Tags</SidebarGroupLabel>
                             {filteredTags.map((tag) => (
                                 <label key={tag} className="flex items-center gap-2">
                                     <Checkbox
@@ -51,7 +51,7 @@ export default function JobSidebar({ tags, selectedTags, onTagChange, selectedCi
                             ))}
                         </SidebarGroup>
                         <SidebarGroup className="flex flex-col gap-2">
-                            <SidebarGroupLabel className="font-medium mb-2">Cities</SidebarGroupLabel>
+                            <SidebarGroupLabel className="font-medium">Cities</SidebarGroupLabel>
                             {availableCities.map((city) => (
                                 <label key={city} className="flex items-center gap-2">
                                     <Checkbox

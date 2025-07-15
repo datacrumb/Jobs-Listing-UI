@@ -63,7 +63,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                     const isBookmarked = bookmarks.includes(jobKey);
                     return (
                         <Card key={idx} className="relative rounded-2xl shadow-sm border border-gray-200 bg-white p-2">
-                            <CardContent className={`rounded-2xl px-6 py-4 mt-0 mb-0 h-[200px] md:h-[350px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
+                            <CardContent className={`rounded-2xl px-2 py-4 mt-0 mb-0 h-[200px] md:h-[350px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
                                 {/* Save/Bookmark icon */}
                                 <button
                                     className={`absolute top-4 right-4 ${isBookmarked ? 'text-black' : 'text-gray-400'} hover:text-black bg-white p-2 rounded-full`}
