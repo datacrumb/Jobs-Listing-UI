@@ -63,18 +63,18 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                     const isBookmarked = bookmarks.includes(jobKey);
                     return (
                         <Card key={idx} className="relative rounded-2xl shadow-sm border border-gray-200 bg-white p-2">
-                            <CardContent className={`rounded-2xl px-2 py-4 mt-0 mb-0 h-[200px] md:h-[350px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
-                                {/* Save/Bookmark icon */}
-                                <button
-                                    className={`absolute top-4 right-4 ${isBookmarked ? 'text-black' : 'text-gray-400'} hover:text-black bg-white p-2 rounded-full`}
-                                    onClick={() => onToggleBookmark(job)}
-                                    aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
-                                >
-                                    <Bookmark size={20} fill={isBookmarked ? 'currentColor' : 'none'} />
-                                </button>
-                                {/* Company logo and name */}
-                                <div className="flex items-center gap-2 mb-2">
+                            <CardContent className={`rounded-2xl px-2 py-4 mt-0 mb-0 h-[200px] md:h-[280px] flex flex-col justify-between`} style={{ backgroundColor: job.color }}>
+                                <div className="flex items-center justify-between gap-2 mb-2">
+                                    {/* Company name */}
                                     <span className="text-sm font-medium text-gray-700">{job.company}</span>
+                                    {/* Save/Bookmark icon */}
+                                    <button
+                                        className={`ml-2 ${isBookmarked ? 'text-black' : 'text-gray-400'} hover:text-black bg-white p-2 rounded-full`}
+                                        onClick={() => onToggleBookmark(job)}
+                                        aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
+                                    >
+                                        <Bookmark size={20} fill={isBookmarked ? 'currentColor' : 'none'} />
+                                    </button>
                                 </div>
                                 {/* Job Title */}
                                 <div className="text-lg md:text-xl lg:text-2xl font-bold mb-3 text-gray-900 leading-tight">
