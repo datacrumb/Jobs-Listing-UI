@@ -96,17 +96,18 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
     return Array.from(tagSet);
   }, [jobsWithColors]);
 
-  // Extract available cities from tags
+  // Extract available cities from job.location
   const availableCities = useMemo(() => {
-    const tagSet = new Set<string>();
+    const locationSet = new Set<string>();
     jobsWithColors.forEach((job) => {
-      (job.tags || '')
-        .split(',')
-        .map((tag) => tag.trim().toLowerCase())
-        .filter(Boolean)
-        .forEach((tag) => tagSet.add(tag));
+      if (job.location) {
+        const loc = job.location.trim().toLowerCase();
+        if (CITY_LIST.includes(loc)) {
+          locationSet.add(loc);
+        }
+      }
     });
-    return CITY_LIST.filter(city => tagSet.has(city));
+    return CITY_LIST.filter(city => locationSet.has(city));
   }, [jobsWithColors]);
 
   // Filter jobs by search, tags, and cities
@@ -119,13 +120,10 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
           .split(",")
           .map((t) => t.trim())
           .some((tag) => selectedTags.includes(tag));
-      // City filter
+      // City filter (now matches job.location)
       const cityMatch =
         selectedCities.length === 0 ||
-        (job.tags || "")
-          .split(",")
-          .map((t) => t.trim().toLowerCase())
-          .some((tag) => selectedCities.includes(tag));
+        (job.location && selectedCities.includes(job.location.trim().toLowerCase()));
       return tagMatch && cityMatch;
     });
   }, [searchedJobs, selectedTags, selectedCities]);
