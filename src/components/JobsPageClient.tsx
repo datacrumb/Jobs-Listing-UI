@@ -173,7 +173,7 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
           placeholder="Search jobs…"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="mb-4 w-full max-w-md px-4 py-2 border rounded-full"
+          className="mb-4 w-full lg:max-w-sm px-4 py-2 border rounded-full"
         />
         <div className="w-full">
           <JobsCard jobs={filteredJobs} bookmarks={bookmarks} onToggleBookmark={onToggleBookmark} />

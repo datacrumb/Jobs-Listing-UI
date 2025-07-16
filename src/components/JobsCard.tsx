@@ -63,11 +63,10 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                     const isBookmarked = bookmarks.includes(jobKey);
                     return (
                         <Card key={idx} className="relative rounded-2xl shadow-sm border border-gray-200 bg-white p-2">
-                            <CardContent className={`rounded-2xl px-2 py-4 mt-0 mb-0 h-[200px] md:h-[280px] flex flex-col justify-between w-full`} style={{ backgroundColor: job.color }}>
+                            <CardContent className="rounded-2xl px-2 py-4 mt-0 mb-0 h-[200px] md:h-[280px] flex flex-col justify-between w-full" style={{ backgroundColor: job.color }}>
+                                {/* Top: Company/bookmark */}
                                 <div className="flex items-center justify-between gap-2 mb-2">
-                                    {/* Company name */}
                                     <span className="text-sm font-medium text-gray-700">{job.company}</span>
-                                    {/* Save/Bookmark icon */}
                                     <button
                                         className={`ml-2 ${isBookmarked ? 'text-black' : 'text-gray-400'} hover:text-black bg-white p-2 rounded-full`}
                                         onClick={() => onToggleBookmark(job)}
@@ -76,14 +75,18 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                                         <Bookmark size={20} fill={isBookmarked ? 'currentColor' : 'none'} />
                                     </button>
                                 </div>
-                                {/* Job Title */}
-                                <div className="text-lg md:text-xl lg:text-2xl font-bold mb-3 text-gray-900 leading-tight">
-                                    {job.title}
+                                {/* Spacer to push title down to a consistent position */}
+                                <div style={{ minHeight: "16px" }} />
+                                {/* Title (always at the same position, left-aligned, wraps if long) */}
+                                <div className="mb-3">
+                                    <div className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 leading-tight break-words">
+                                        {job.title}
+                                    </div>
                                 </div>
-                                {/* Tags */}
-                                {job.tags && job.tags.split(',').map(tag => tag.trim()).filter(Boolean).length > 0 && (
-                                    <div className="flex flex-wrap gap-2 mb-2 pr-1">
-                                        {job.tags
+                                {/* Tags (always at the bottom, reserve space even if empty) */}
+                                <div className="flex flex-wrap gap-2 pr-1 min-h-[32px]">
+                                    {job.tags && job.tags.split(',').map(tag => tag.trim()).filter(Boolean).length > 0 &&
+                                        job.tags
                                             .split(",")
                                             .slice(0, 3)
                                             .map((tag, i) => tag.trim())
@@ -91,13 +94,12 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                                             .map((tag, i) => (
                                                 <Badge
                                                     key={i}
-                                                    className={`rounded-full bg-[${job.color}] text-black font-medium px-3 py-1 text-xs border border-gray-400 py-2 truncate max-w-[100px]`}
+                                                    className="rounded-full bg-[${job.color}] text-black font-medium px-3 py-1 text-xs border border-gray-400 py-2 truncate max-w-[100px]"
                                                 >
                                                     {tag}
                                                 </Badge>
                                             ))}
-                                    </div>
-                                )}
+                                </div>
                             </CardContent>
                             <CardFooter className="bg-white rounded-b-2xl flex items-center justify-between pb-4">
                                 <div>
