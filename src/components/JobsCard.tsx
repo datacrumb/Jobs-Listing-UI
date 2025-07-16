@@ -34,7 +34,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
     const paginatedJobs = jobs.slice((page - 1) * JOBS_PER_PAGE, page * JOBS_PER_PAGE);
 
     // Determine grid class
-    const gridClass = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full`;
+    const gridClass = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full`;
     const sheetGridClass = `grid grid-cols-1 gap-6 w-full`;
 
     // Helper to generate page numbers (show up to 5 pages, with current in the middle if possible)
@@ -91,7 +91,7 @@ export default function JobsCard({ jobs, bookmarks, onToggleBookmark, columns = 
                                             .map((tag, i) => (
                                                 <Badge
                                                     key={i}
-                                                    className={`rounded-full text-white font-medium px-3 py-1 text-xs border border-gray-400 py-2 truncate max-w-[100px]`}
+                                                    className={`rounded-full bg-[${job.color}] text-black font-medium px-3 py-1 text-xs border border-gray-400 py-2 truncate max-w-[100px]`}
                                                 >
                                                     {tag}
                                                 </Badge>
