@@ -5,28 +5,54 @@ import { Job } from "@/lib/google-sheets";
 import JobsCard from "@/components/JobsCard";
 import JobSidebar from "@/components/Sidebar";
 import { JOB_CARD_COLORS } from "@/lib/job-card-colors";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Bookmark } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Fuse from "fuse.js";
+import { Input } from "./ui/input";
 
 const CITY_LIST = ["karachi", "lahore", "islamabad", "peshawar", "quetta"];
 
+// Helper to get a unique key for a job
+const getJobKey = (job: Job) => `${job.company}__${job.title}__${job.location}`;
+
 export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
+  // Remove duplicate jobs by unique key
+  const dedupedJobs = useMemo(() => {
+    const seen = new Set<string>();
+    return jobs.filter(job => {
+      const key = getJobKey(job);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [jobs]);
+
   // Assign a color to each job deterministically
   const jobsWithColors = useMemo(() => {
-    return jobs.map((job, idx) => ({
+    return dedupedJobs.map((job, idx) => ({
       ...job,
       color: JOB_CARD_COLORS[idx % JOB_CARD_COLORS.length],
     }));
-  }, [jobs]);
+  }, [dedupedJobs]);
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Unique key for a job
-  const getJobKey = (job: Job) => `${job.company}__${job.title}__${job.location}`;
+  // Fuse.js setup for fuzzy search
+  const fuse = useMemo(() => new Fuse(jobsWithColors, {
+    keys: ["title", "company", "tags"],
+    threshold: 0.4,
+  }), [jobsWithColors]);
+
+  // Fuzzy search jobs
+  const searchedJobs = useMemo(() => {
+    if (!searchTerm.trim()) return jobsWithColors;
+    return fuse.search(searchTerm).map(result => result.item);
+  }, [searchTerm, fuse, jobsWithColors]);
 
   // Load bookmarks from localStorage on mount
   useEffect(() => {
@@ -83,8 +109,9 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
     return CITY_LIST.filter(city => tagSet.has(city));
   }, [jobsWithColors]);
 
+  // Filter jobs by search, tags, and cities
   const filteredJobs = useMemo(() => {
-    return jobsWithColors.filter((job) => {
+    return searchedJobs.filter((job) => {
       // Tag filter
       const tagMatch =
         selectedTags.length === 0 ||
@@ -101,7 +128,7 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
           .some((tag) => selectedCities.includes(tag));
       return tagMatch && cityMatch;
     });
-  }, [jobsWithColors, selectedTags, selectedCities]);
+  }, [searchedJobs, selectedTags, selectedCities]);
 
   // Get bookmarked jobs
   const bookmarkedJobs = useMemo(() => {
@@ -131,8 +158,8 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
                 )}
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-md pl-2">
-              <div className="text-xl font-bold mb-4">Bookmarked Jobs</div>
+            <SheetContent side="right" className="w-full max-w-md">
+              <SheetTitle>Bookmarked Jobs</SheetTitle>
               {bookmarkedJobs.length === 0 ? (
                 <div className="text-gray-500">No bookmarks yet.</div>
               ) : (
@@ -143,6 +170,13 @@ export default function JobsPageClient({ jobs }: { jobs: Job[] }) {
             </SheetContent>
           </Sheet>
         </div>
+        <Input
+          type="text"
+          placeholder="Search jobs…"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className="mb-4 w-full max-w-md px-4 py-2 border rounded-full"
+        />
         <div className="w-full">
           <JobsCard jobs={filteredJobs} bookmarks={bookmarks} onToggleBookmark={onToggleBookmark} />
         </div>
